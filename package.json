@@ -1,7 +1,7 @@
 {
   "name": "artbels-js-tools",
   "version": "1.0.0",
-  "description": "\"Small tools like browser request-promise or iterate recursion controller\"",
+  "description": "Small tools like browser request-promise or iterate recursion controller",
   "main": "t.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
