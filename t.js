@@ -71,14 +71,14 @@
   };
 
 
-  T.getLS = function(path, message, placeholder) {
+  T.getLS = function(prop, message, placeholder) {
     var data;
-    message = message || "Enter data for " + path;
+    message = message || "Enter data for " + prop;
     placeholder = placeholder || "";
-    if (!localStorage[path] || (localStorage[path].length === 0)) {
+    if (!localStorage[prop] || (localStorage[prop].length === 0)) {
       data = prompt(message, placeholder);
-      localStorage[path] = data;
-    } else data = localStorage[path];
+      localStorage[prop] = data;
+    } else data = localStorage[prop];
     return data;
   };
 
@@ -99,7 +99,7 @@
       url: params
     };
 
-    if (params.url || params.uri) throw Error("no url");
+    if (!params.url && !params.uri) throw Error("no url");
 
     params.url = params.url || params.uri;
     params.method = params.method || "GET";
