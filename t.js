@@ -55,16 +55,13 @@
   };
 
 
-  T.livereload = function() {
+  T.live = function() {
     var servUrl = 'http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1';
-    var headMode = document.querySelector("head");
-    var script = document.createElement("script");
-    script.scr = servUrl;
-    headMode.appendChild(script);
+    T.importJs(servUrl);
   };
 
 
-  T.setPageTitle = function(sel, func) {
+  T.setPageTitle = function() {
     var pagePath = window.location.pathname;
     var pageTitle = document.querySelector("title");
     if (pageTitle && pagePath) pageTitle.innerHTML = pagePath.split("/").pop();
@@ -143,6 +140,76 @@
       };
       req.send(params.body && JSON.stringify(params.body));
     });
+  };
+
+
+  T.genId = function(len) {
+    len = len || 10;
+    return Math.random().toString(36).substr(2, len);
+  };
+
+
+  T.importJs = function(src, lookFor, onload) {
+    if (!isMyScriptLoaded(src)) {
+      var s = document.createElement('script');
+      s.setAttribute('type', 'text/javascript');
+      s.setAttribute('src', src);
+      if (onload) {
+        waitForScriptLoad(lookFor, onload);
+      }
+      var head = document.getElementsByTagName('head')[0];
+      if (head) {
+        head.appendChild(s);
+      } else {
+        document.body.appendChild(s);
+      }
+    } else {
+      if(onload) onload();
+    }
+
+    function waitForScriptLoad(lookFor, onload) {
+      var interv = setInterval(function() {
+        if ((typeof lookFor !== 'undefined') || (lookFor)) {
+          clearInterval(interv);
+          onload();
+        }
+      }, 50);
+    }
+
+    function isMyScriptLoaded(url) {
+      var loadedScripts = document.getElementsByTagName('script');
+      for (var i = loadedScripts.length; i--;) {
+        if (loadedScripts[i].src == url) return true;
+      }
+      return false;
+    }
+  };
+
+
+  T.importCss = function(href, lookFor, onload) {
+    if (!isMyLinkLoaded(href)) {
+      var s = document.createElement('link');
+      s.setAttribute('rel', 'stylesheet');
+      s.setAttribute('href', href);
+      if(onload) waitForScriptLoad(lookFor, onload);
+      var head = document.getElementsByTagName('head')[0];
+      if (head) {
+        head.appendChild(s);
+      } else {
+        document.body.appendChild(s);
+      }
+    } else {
+      if(onload) onload();
+    }
+
+    function waitForScriptLoad(lookFor, onload) {
+      var interv = setInterval(function() {
+        if ((typeof lookFor !== 'undefined') || (lookFor)) {
+          clearInterval(interv);
+          onload();
+        }
+      }, 50);
+    }
   };
 
 
