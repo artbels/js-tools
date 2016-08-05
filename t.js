@@ -32,7 +32,7 @@
 
       if ((params.index < params.len)) {
         setTimeout(function() {
-          func(arr[params.index], midCallback, params);
+          func(arr[params.index], midCallback, params, index);
         }, params.timeout);
       } else {
         params.cb(finalArr);
