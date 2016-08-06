@@ -164,7 +164,7 @@
         document.body.appendChild(s);
       }
     } else {
-      if(onload) onload();
+      if (onload) onload();
     }
 
     function waitForScriptLoad(lookFor, onload) {
@@ -191,7 +191,7 @@
       var s = document.createElement('link');
       s.setAttribute('rel', 'stylesheet');
       s.setAttribute('href', href);
-      if(onload) waitForScriptLoad(lookFor, onload);
+      if (onload) waitForScriptLoad(lookFor, onload);
       var head = document.getElementsByTagName('head')[0];
       if (head) {
         head.appendChild(s);
@@ -199,7 +199,7 @@
         document.body.appendChild(s);
       }
     } else {
-      if(onload) onload();
+      if (onload) onload();
     }
 
     function waitForScriptLoad(lookFor, onload) {
@@ -210,6 +210,51 @@
         }
       }, 50);
     }
+  };
+
+
+  T.cmprArr = function(oldArr, newArr, cb) {
+    var o = {
+      del: [],
+      add: []
+    };
+    var newSet = {};
+
+    var i1 = 0;
+    var l1 = oldArr.length;
+    (function iter() {
+      var oldItem = oldArr[i1].split(/\t/);
+      var strOld = JSON.stringify(oldItem);
+      var matchOld = false;
+
+
+      for (var i2 = 0; i2 < newArr.length; i2++) {
+        var newItem = newArr[i2].split(/\t/);
+        var newStr = JSON.stringify(newItem);
+
+        if (i1 === 0) newSet[newStr] = newItem;
+
+        if (strOld == newStr) {
+          matchOld = true;
+          delete newSet[newItem];
+          if (i1 !== 0) break;
+        }
+      }
+
+      if (!matchOld) o.del.push(oldItem);
+
+      i1++;
+      if (i1 < l1) iter();
+      else {
+        for (var key in newSet) {
+          var item = newSet[key];
+          o.add.push(item);
+        }
+
+        cb(o);
+      }
+
+    })();
   };
 
 
