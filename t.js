@@ -214,22 +214,25 @@
 
 
   T.cmprArr = function(oldArr, newArr, cb) {
+
     var o = {
       del: [],
       add: []
     };
+    
     var newSet = {};
 
     var i1 = 0;
     var l1 = oldArr.length;
+
     (function iter() {
-      var oldItem = oldArr[i1].split(/\t/);
+      var oldItem = oldArr[i1];
       var strOld = JSON.stringify(oldItem);
       var matchOld = false;
 
 
       for (var i2 = 0; i2 < newArr.length; i2++) {
-        var newItem = newArr[i2].split(/\t/);
+        var newItem = newArr[i2];
         var newStr = JSON.stringify(newItem);
 
         if (i1 === 0) newSet[newStr] = newItem;
