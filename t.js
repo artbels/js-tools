@@ -239,7 +239,7 @@
 
         if (strOld == newStr) {
           matchOld = true;
-          delete newSet[newItem];
+          delete newSet[newStr];
           if (i1 !== 0) break;
         }
       }
