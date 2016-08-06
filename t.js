@@ -258,4 +258,14 @@
   };
 
 
+  T.getTextareaArr = function(node) {
+
+    if (typeof node == "string") node = document.querySelector(node);
+
+    var textareaArr = node.value.trim().split(/\n\r?/).filter(function(a) {
+      return a;
+    });
+    return textareaArr;
+  };
+
 })();
