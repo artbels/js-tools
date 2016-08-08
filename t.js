@@ -4,6 +4,8 @@
 
   T.iter = function(arr, func, params) {
 
+    if(!arr || !arr.length) return console.warn("empty arr");
+
     var startTime = new Date();
 
     params = params || {};
