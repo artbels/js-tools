@@ -19,7 +19,7 @@
     params.index = params.index || params.i || 0;
     params.len = params.len || arr.length;
     params.consoleRound = params.consoleRound || Math.floor(params.len / 20);
-    params.verbose = (typeof params.verbose == "boolean") ? params.verbose : true;
+    if((typeof params.verbose == "undefined") && (arr.length > 1000)) params.verbose = true;
 
     var finalArr = [];
 
