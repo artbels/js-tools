@@ -126,19 +126,19 @@
             }
           }
         } else if (req.response === "") {
-          reject(Error("empty answer"));
+          reject("empty answer");
         } else {
-          reject(Error(req.statusText));
+          reject(req.statusText);
         }
       };
 
       req.timeout = params.timeout;
       req.ontimeout = function() {
         console.log("getRequest timed out: " + req.timeout);
-        reject(Error(req.statusText));
+        reject(req.statusText);
       };
       req.onerror = function() {
-        reject(Error("Network Error"));
+        reject("Network Error");
       };
       req.send(params.body && JSON.stringify(params.body));
     });
