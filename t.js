@@ -4,7 +4,7 @@
 
   T.iter = function(arr, func, params) {
 
-    if(!arr || !arr.length) return console.warn("empty arr");
+    if (!arr || !arr.length) return console.warn("empty arr");
 
     var startTime = new Date();
 
@@ -21,7 +21,7 @@
     params.index = params.index || params.i || 0;
     params.len = params.len || arr.length;
     params.consoleRound = params.consoleRound || Math.floor(params.len / 20);
-    if((typeof params.verbose == "undefined") && (arr.length > 1000)) params.verbose = true;
+    if ((typeof params.verbose == "undefined") && (arr.length > 1000)) params.verbose = true;
 
     var finalArr = [];
 
@@ -221,7 +221,7 @@
       del: [],
       add: []
     };
-    
+
     var newSet = {};
 
     var i1 = 0;
@@ -271,6 +271,45 @@
       return a;
     });
     return textareaArr;
+  };
+
+
+  T.getTsv = function(arr, delim) {
+    delim = delim || "\t";
+    var rowArr = [];
+
+    for (var i = 0; i < arr.length; i++) {
+      var obj = arr[i];
+      var valArr = [];
+      for (var prop in obj) {
+        var val = obj[prop];
+        valArr.push(val);
+      }
+      var rowStr = valArr.join(delim);
+      rowArr.push(rowStr);
+    }
+    return rowArr.join("\n");
+  };
+
+
+  T.copyStr = function(str) {
+    var input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('value', str);
+    input = document.body.appendChild(input);
+    input.select();
+    
+    try {
+      if (!document.execCommand('copy')) throw 'Not allowed.';
+    } catch (e) {
+      input.remove();
+      console.log("document.execCommand('copy'); is not supported");
+      prompt('Copy the text (ctrl c, enter)', str);
+    } finally {
+      if (typeof e == 'undefined') {
+        input.remove();
+      }
+    }
   };
 
 })();
