@@ -292,9 +292,9 @@
   };
 
 
-  T.copyStr = function(str) {
+  T.copy2Clip = function(str) {
     var textarea = document.createElement('textarea');
-    textarea.value = text;
+    textarea.value = str;
     textarea.setAttribute('value', str);
     textarea = document.body.appendChild(textarea);
     textarea.select();
