@@ -293,21 +293,21 @@
 
 
   T.copyStr = function(str) {
-    var input = document.createElement('input');
-    input.setAttribute('type', 'text');
-    input.setAttribute('value', str);
-    input = document.body.appendChild(input);
-    input.select();
-    
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('value', str);
+    textarea = document.body.appendChild(textarea);
+    textarea.select();
+
     try {
       if (!document.execCommand('copy')) throw 'Not allowed.';
     } catch (e) {
-      input.remove();
+      textarea.remove();
       console.log("document.execCommand('copy'); is not supported");
       prompt('Copy the text (ctrl c, enter)', str);
     } finally {
       if (typeof e == 'undefined') {
-        input.remove();
+        textarea.remove();
       }
     }
   };
