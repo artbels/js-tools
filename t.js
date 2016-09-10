@@ -150,9 +150,10 @@
   T.post = function(apiUrl, body) {
     var params = {
       url: apiUrl,
-      body: body
+      body: body,
+      method: "POST"
     };
-    
+
     return T.rp(params);
   };
 
