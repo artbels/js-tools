@@ -147,6 +147,16 @@
   };
 
 
+  T.post = function(apiUrl, body) {
+    var params = {
+      url: apiUrl,
+      body: body
+    };
+    
+    return T.rp(params);
+  };
+
+
   T.genId = function(len) {
     len = len || 10;
     return Math.random().toString(36).substr(2, len);
