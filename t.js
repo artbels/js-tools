@@ -110,6 +110,8 @@
       var req = new XMLHttpRequest();
       req.open(params.method, params.url);
 
+      if (params.body) req.setRequestHeader("Content-Type", "application/json");
+
       if (params.headers) {
         for (var key in params.headers) {
           req.setRequestHeader(key, params.headers[key]);
