@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/artbels/js-tools/issues"
   },
-  "homepage": "https://github.com/artbels/js-tools#readme"
+  "homepage": "https://github.com/artbels/js-tools#readme",
+  "dependencies": {
+    "request-promise": "^3.0.0"
+  }
 }
