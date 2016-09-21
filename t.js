@@ -44,7 +44,7 @@
     }
 
     function midCallback(res) {
-      if (res) finalArr = finalArr.concat(res);
+      if (res) finalArr.push(res);
       received++;
 
       if (received == params.len) {
