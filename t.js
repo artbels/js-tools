@@ -17,6 +17,7 @@
     params.cb = params.cb || console.log
     params.index = params.index || params.i || 0
     params.len = params.len || arr.length
+    params.timeout = params.timeout || 1 // without timeout sync functions won't grow index
     params.concurrency = params.concurrency || 1
     params.consoleRound = params.consoleRound || Math.floor(params.len / 20)
     if ((typeof params.verbose == 'undefined') && (arr.length > 1000)) params.verbose = true
@@ -37,17 +38,19 @@
       }
 
       var item = arr[index]
-      func(item, midCallback, params)
+      func(item, function (res) {
+        setTimeout(function () {
+          midCallback(res)
+        }, params.timeout)
+      }, params)
     }
 
     function midCallback (res) {
-
       if (res) finalArr.push(res)
       received++
 
       if (received == params.len) {
         params.cb(finalArr)
-
       } else if (params.index < params.len) {
         launchNextLine(params.index)
         params.index++
