@@ -3,6 +3,7 @@ var T = require('../t')
 
 T.iter([1, 2, 3, 4, 5], async, {
   concurrency: 1,
+  timeout: 0,
   cb: next
 })
 
@@ -15,14 +16,12 @@ function async (a, cb) {
   }, timeout)
 }
 
-function next(r) {
+function next (r) {
   console.log(r)
-T.iter([1, 2, 3, 4, 5], function (a, cb) {
-  console.log(a)
-  cb(a)
-}, {
-  concurrency: 1
-})
+  T.iter([1, 2, 3, 4, 5], function (a, cb) {
+    console.log(a)
+    cb(a)
+  }, {
+    concurrency: 1
+  })
 }
-
-
