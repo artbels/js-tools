@@ -151,7 +151,6 @@
     var params = {
       url: apiUrl,
       body: body,
-      headers: headers,
       method: 'POST'
     }
 
