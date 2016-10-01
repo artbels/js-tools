@@ -94,7 +94,6 @@
   }
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = T
     T.rp = require('request-promise')
   } else T.rp = function (params) {
       if (typeof params == 'string') params = {
@@ -152,6 +151,7 @@
     var params = {
       url: apiUrl,
       body: body,
+      headers: headers,
       method: 'POST'
     }
 
@@ -313,5 +313,9 @@
         textarea.remove()
       }
     }
+  }
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = T
   }
 })()
