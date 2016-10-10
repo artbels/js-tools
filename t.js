@@ -104,7 +104,7 @@
 
       params.url = params.url || params.uri
       params.method = params.method || 'GET'
-      params.timeout = params.timeout || 15000
+      params.timeout = params.timeout || 0
       params.json = params.json || true
 
       return new Promise(function (resolve, reject) {
