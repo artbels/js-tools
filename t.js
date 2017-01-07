@@ -8,7 +8,7 @@
 
     params = params || {}
 
-    if (typeof params == 'function') {
+    if (typeof params === 'function') {
       params = {
         cb: params
       }
@@ -20,7 +20,7 @@
     params.timeout = params.timeout || 0
     params.concurrency = params.concurrency || 1
     params.consoleRound = params.consoleRound || Math.floor(params.len / 20)
-    if ((typeof params.verbose == 'undefined') && (arr.length > 1000)) params.verbose = true
+    if ((typeof params.verbose === 'undefined') && (arr.length > 1000)) params.verbose = true
 
     var finalArr = []
 
@@ -95,9 +95,12 @@
 
   if (typeof module !== 'undefined' && module.exports) {
     T.rp = require('request-promise')
-  } else T.rp = function (params) {
-      if (typeof params == 'string') params = {
+  } else {
+    T.rp = function (params) {
+      if (typeof params === 'string') {
+        params = {
           url: params
+        }
       }
 
       if (!params.url && !params.uri) throw Error('no url')
@@ -145,6 +148,7 @@
         }
         req.send(params.body && JSON.stringify(params.body))
       })
+    }
   }
 
   T.post = function (apiUrl, body) {
@@ -269,7 +273,7 @@
   }
 
   T.getTextareaArr = function (node) {
-    if (typeof node == 'string') node = document.querySelector(node)
+    if (typeof node === 'string') node = document.querySelector(node)
 
     var textareaArr = node.value.trim().split(/\n\r?/).filter(function (a) {
       return a
@@ -283,13 +287,13 @@
     var rowArr = []
     var columns = {}
 
-    for (var i = 0; i < arr.length; i++) { //собираем все ключи со всех объектов, а не только с первого
+    for (var i = 0; i < arr.length; i++) { // собираем все ключи со всех объектов, а не только с первого
       for (var key in arr[i]) {
-      columns[key] = true
+        columns[key] = true
       }
     }
 
-    rowArr.push(Object.keys(columns).join(delim)) //добавляем названия колонок
+    rowArr.push(Object.keys(columns).join(delim)) // добавляем названия колонок
 
     for (var j = 0; j < arr.length; j++) {
       var obj = arr[j]
@@ -318,7 +322,7 @@
       console.log("document.execCommand('copy'); is not supported")
       prompt('Copy the text (ctrl c, enter)', str)
     } finally {
-      if (typeof e == 'undefined') {
+      if (typeof e === 'undefined') {
         textarea.remove()
       }
     }
@@ -351,6 +355,67 @@
     }
 
     return finStr
+  }
+
+  T.getWeek = function (date) {
+    // Create a copy of this date object
+    var target = new Date(date.valueOf())
+
+    // ISO week date weeks start on monday
+    // so correct the day number
+    var dayNr = (date.getDay() + 6) % 7
+
+    // ISO 8601 states that week 1 is the week
+    // with the first thursday of that year.
+    // Set the target date to the thursday in the target week
+    target.setDate(target.getDate() - dayNr + 3)
+
+    // Store the millisecond value of the target date
+    var firstThursday = target.valueOf()
+
+    // Set the target to the first thursday of the year
+    // First set the target to january first
+    target.setMonth(0, 1)
+    // Not a thursday? Correct the date to the next thursday
+    if (target.getDay() != 4) {
+      target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7)
+    }
+
+    // The weeknumber is the number of weeks between the
+    // first thursday of the year and the thursday in the target week
+    return 1 + Math.ceil((firstThursday - target) / 604800000) // 604800000 = 7 * 24 * 3600 * 1000
+  }
+
+  T.getDate = function (date) {
+    if (typeof date === 'number') {
+      date = new Date(date)
+    } else if (typeof date === 'string') {
+      var reCyrDate = /(\d{1,2})(?:\.|\-|\/)(\d{1,2})(?:\.|\-|\/)(\d{4})/
+      var matchCyrDate = date.match(reCyrDate)
+      date = reCyrDate.test(date) ? new Date(matchCyrDate[3] + '.' + matchCyrDate[2] + '.' + matchCyrDate[1]) : new Date(date)
+    } else if (typeof str !== 'object') {
+      date = undefined
+    } 
+    return date
+  }
+
+  T.getDateDeriv = function (date) {
+    var o = {srcDate: date}
+
+    o.year = date.getFullYear()
+    var month = date.getMonth() + 1
+    var monthString = (String(month).length == 1 ? '0' + month : String(month))
+    o.day = date.getDate()
+    var dayString = (String(o.day).length == 1 ? '0' + o.day : String(o.day))
+    o.dateDot = o.year + "." + monthString + "." + dayString;
+    o.dateSlash = o.year + '-' + monthString + '-' + dayString
+    o.date = new Date(o.dateDot);
+    o.dateNum = Number(new Date(o.dateDot));
+    var week = T.getWeek(date)
+    var weekString = (String(week).length == 1 ? '0' + week : String(week))
+    o.yearMonth = o.year.toString().slice(-2) + '/' + monthString
+    o.yearWeek = (((month == 1) && ([52,53].indexOf(week) !== -1)) ? o.year - 1 : o.year).toString().slice(-2) + '/' + weekString
+    return o
   }
 
   if (typeof module !== 'undefined' && module.exports) {
