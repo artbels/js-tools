@@ -395,7 +395,7 @@
       date = reCyrDate.test(date) ? new Date(matchCyrDate[3] + '.' + matchCyrDate[2] + '.' + matchCyrDate[1]) : new Date(date)
     } else if (typeof str !== 'object') {
       date = undefined
-    } 
+    }
     return date
   }
 
@@ -407,15 +407,75 @@
     var monthString = (String(month).length == 1 ? '0' + month : String(month))
     o.day = date.getDate()
     var dayString = (String(o.day).length == 1 ? '0' + o.day : String(o.day))
-    o.dateDot = o.year + "." + monthString + "." + dayString;
+    o.dateDot = o.year + '.' + monthString + '.' + dayString
     o.dateSlash = o.year + '-' + monthString + '-' + dayString
-    o.date = new Date(o.dateDot);
-    o.dateNum = Number(new Date(o.dateDot));
+    o.date = new Date(o.dateDot)
+    o.dateNum = Number(new Date(o.dateDot))
     var week = T.getWeek(date)
     var weekString = (String(week).length == 1 ? '0' + week : String(week))
     o.yearMonth = o.year.toString().slice(-2) + '/' + monthString
-    o.yearWeek = (((month == 1) && ([52,53].indexOf(week) !== -1)) ? o.year - 1 : o.year).toString().slice(-2) + '/' + weekString
+    o.yearWeek = (((month == 1) && ([52, 53].indexOf(week) !== -1)) ? o.year - 1 : o.year).toString().slice(-2) + '/' + weekString
     return o
+  }
+
+  T.getJsonFromStr = function (str, start, stop) {
+    var split = str.split(start)
+    var resStr
+    if (!split[1]) return
+
+    resStr = split[1].trim()
+
+    if (stop) {
+      var splStop = resStr.split(stop)
+      resStr = splStop[0].trim()
+    }
+
+    try {
+      resStr = findPropEnd(resStr).trim()
+      resStr = 'var json = ' + resStr + '; return json'
+      var func = new Function(resStr)
+      return func()
+    } catch (e) {
+      return e
+    }
+
+    function findPropEnd (str) {
+      str = str.trim()
+      var o = {
+        curly: 0,
+        straight: 0,
+        one: 0,
+        two: 0
+      }
+
+      for (var i = 0; i < str.length; i++) {
+        var letter = str[i]
+        switch (letter) {
+          case '{':
+            o.curly++
+            break
+          case '}':
+            o.curly--
+            break
+          case '[':
+            o.straight++
+            break
+          case ']':
+            o.straight--
+            break
+          case "'":
+            if(o.one % 2 === 0) o.one++; else o.one--
+            break
+          case '"':
+            if(o.two % 2 === 0) o.two++; else o.two--
+            break
+        }
+        if ((i > 1) && ((o.curly + o.straight + o.one + o.two) === 0)) {
+          var content = str.substr(0, (i + 1))
+          return content
+        }
+      }
+    }
   }
 
   if (typeof module !== 'undefined' && module.exports) {
