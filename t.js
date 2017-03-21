@@ -464,10 +464,10 @@
             o.straight--
             break
           case "'":
-            if(o.one % 2 === 0) o.one++; else o.one--
+            if (o.one % 2 === 0) o.one++; else o.one--
             break
           case '"':
-            if(o.two % 2 === 0) o.two++; else o.two--
+            if (o.two % 2 === 0) o.two++; else o.two--
             break
         }
         if ((i > 1) && ((o.curly + o.straight + o.one + o.two) === 0)) {
@@ -476,6 +476,21 @@
         }
       }
     }
+  }
+
+  T.json2qs = function (o) {
+    return '?' +
+        Object.keys(o).map(function (key) {
+          return encodeURIComponent(key) + '=' +
+            encodeURIComponent(o[key])
+        }).join('&')
+  }
+
+  T.qs2json = function () {
+    var search = location.search.substring(1)
+    if (!search) return
+    search = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === '' ? value : decodeURIComponent(value) })
+    return search
   }
 
   if (typeof module !== 'undefined' && module.exports) {
