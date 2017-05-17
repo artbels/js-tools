@@ -497,7 +497,7 @@
     module.exports = T
   }
 
-  T.roundCoords = function (n, roundTo) {
+  T.roundCoord = function (n, roundTo) {
     roundTo = roundTo || 1000000
     return Math.round(Number(n) * roundTo) / roundTo
   }
