@@ -487,7 +487,7 @@
   }
 
   T.qs2json = function () {
-    var search = location.search.substring(1)
+    var search = location.search.substring(1).replace(/\/$/,'')
     if (!search) return
     search = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === '' ? value : decodeURIComponent(value) })
     return search
