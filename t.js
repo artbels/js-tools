@@ -123,7 +123,7 @@
         }
 
         req.onload = function () {
-          if ((req.status === 200) && (req.response !== '')) {
+          if (req.response !== '') {
             if (params.json) {
               try {
                 resolve(JSON.parse(req.response))
