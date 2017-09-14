@@ -108,7 +108,7 @@
       params.url = params.url || params.uri
       params.method = params.method || 'GET'
       params.timeout = params.timeout || 0
-      params.json = params.json || true
+      params.json = params.json !== undefined ? params.json : true
 
       return new Promise(function (resolve, reject) {
         var req = new XMLHttpRequest()
@@ -123,18 +123,14 @@
         }
 
         req.onload = function () {
-          if (req.response !== '') {
-            if (params.json) {
-              try {
-                resolve(JSON.parse(req.response))
-              } catch (e) {
-                resolve(req.response)
-              }
+          if (params.json) {
+            try {
+              resolve(JSON.parse(req.response))
+            } catch (e) {
+              resolve(req.response)
             }
-          } else if (req.response === '') {
-            reject('empty answer')
           } else {
-            reject(req.statusText)
+            resolve(req.response)
           }
         }
 
