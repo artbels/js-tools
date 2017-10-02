@@ -1,6 +1,6 @@
 {
   "name": "artbels-js-tools",
-  "version": "1.0.41",
+  "version": "1.0.42",
   "description": "Small tools like browser request-promise or iterate recursion controller",
   "main": "t.js",
   "scripts": {
@@ -24,6 +24,6 @@
     "mocha": "^2.5.3",
     "gulp": "^3.9.1",
     "gulp-uglify": "^1.5.3",
-    "gulp-rename":""
+    "gulp-rename": ""
   }
 }
