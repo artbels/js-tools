@@ -157,6 +157,25 @@
     return T.rp(params)
   }
 
+  T.patch = function (apiUrl, body) {
+    var params = {
+      url: apiUrl,
+      body: body,
+      method: 'PATCH'
+    }
+
+    return T.rp(params)
+  }
+
+  T.delete = function (apiUrl) {
+    var params = {
+      url: apiUrl,
+      method: 'DELETE'
+    }
+
+    return T.rp(params)
+  }
+
   T.genId = function (len) {
     len = len || 10
     return Math.random().toString(36).substr(2, len)
