@@ -1,6 +1,6 @@
 {
   "name": "artbels-js-tools",
-  "version": "1.0.42",
+  "version": "1.0.43",
   "description": "Small tools like browser request-promise or iterate recursion controller",
   "main": "t.js",
   "scripts": {
