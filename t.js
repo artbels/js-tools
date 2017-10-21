@@ -516,4 +516,15 @@
     roundTo = roundTo || 1000000
     return Math.round(Number(n) * roundTo) / roundTo
   }
+
+  T.round = function (n, roundTo) {
+    roundTo = roundTo || 100
+    return Math.round(Number(n) * roundTo) / roundTo
+  }
+
+  T.escapeRegExp = function (str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&')
+  }
+
+
 })()
