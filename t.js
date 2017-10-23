@@ -2,68 +2,75 @@
   var T = this.T = {}
 
   T.iter = function (arr, func, params) {
-    if (!arr || !arr.length) return console.warn('empty arr')
+    return new Promise(function (responce, err) {
+      var startTime = new Date()
 
-    var startTime = new Date()
+      params = params || {}
 
-    params = params || {}
-
-    if (typeof params === 'function') {
-      params = {
-        cb: params
-      }
-    }
-
-    params.cb = params.cb || console.log
-    params.index = params.index || params.i || 0
-    params.len = params.len || arr.length
-    params.timeout = params.timeout || 0
-    params.concurrency = params.concurrency || 1
-    params.consoleRound = params.consoleRound || Math.floor(params.len / 20)
-    if ((typeof params.verbose === 'undefined') && (arr.length > 1000)) params.verbose = true
-
-    var finalArr = []
-
-    var received = 0
-
-    params.concurrency = Math.min(params.len, params.concurrency)
-
-    for (; params.index < params.concurrency; params.index++) {
-      launchNextLine(params.index)
-    }
-
-    function launchNextLine (index) {
-      if (params.verbose) {
-        if ((index == 1) || ((index !== 0) && (index % params.consoleRound === 0))) logStatusMessage()
+      if (typeof params === 'function') {
+        params = {
+          cb: params
+        }
       }
 
-      var item = arr[index]
-      func(item, function (res) {
-        setTimeout(function () { // without timeout sync functions won't grow index
-          midCallback(res, index)
-        }, params.timeout)
-      }, params)
-    }
+      params.cb = params.cb || console.log
+      params.index = params.index || params.i || 0
+      params.len = params.len || arr.length
+      params.timeout = params.timeout || 0
+      params.concurrency = params.concurrency || 1
+      params.consoleRound = params.consoleRound || Math.floor(params.len / 20)
+      if ((typeof params.verbose === 'undefined') && (arr.length > 1000)) params.verbose = true
 
-    function midCallback (res, index) {
-      if (res) finalArr[index] = res
-      received++
+      if (!arr || !arr.length) {
+        if (err) err('empty arr')
+        if (params.cb) params.cb('empty arr')
+        return
+      }
 
-      if (received == params.len) {
-        params.cb(finalArr)
-      } else if (params.index < params.len) {
+      var finalArr = []
+
+      var received = 0
+
+      params.concurrency = Math.min(params.len, params.concurrency)
+
+      for (; params.index < params.concurrency; params.index++) {
         launchNextLine(params.index)
-        params.index++
       }
-    }
 
-    function logStatusMessage () {
-      var currTime = new Date()
-      var timeDiff = (currTime - startTime) / 1000
-      var percCompl = params.index / params.len
+      function launchNextLine (index) {
+        if (params.verbose) {
+          if ((index == 1) || ((index !== 0) && (index % params.consoleRound === 0))) logStatusMessage()
+        }
 
-      console.log((percCompl * 100).toFixed(0) + '% completed, ' + (timeDiff / percCompl - timeDiff).toFixed(0) + ' seconds to finish')
-    }
+        var item = arr[index]
+        func(item, function (res) {
+          setTimeout(function () { // without timeout sync functions won't grow index
+            midCallback(res, index)
+          }, params.timeout)
+        }, params)
+      }
+
+      function midCallback (res, index) {
+        if (res) finalArr[index] = res
+        received++
+
+        if (received == params.len) {
+          if (params.cb) params.cb(finalArr)
+          if (responce) responce(finalArr)
+        } else if (params.index < params.len) {
+          launchNextLine(params.index)
+          params.index++
+        }
+      }
+
+      function logStatusMessage () {
+        var currTime = new Date()
+        var timeDiff = (currTime - startTime) / 1000
+        var percCompl = params.index / params.len
+
+        console.log((percCompl * 100).toFixed(0) + '% completed, ' + (timeDiff / percCompl - timeDiff).toFixed(0) + ' seconds to finish')
+      }
+    })
   }
 
   T.live = function () {
@@ -525,6 +532,4 @@
   T.escapeRegExp = function (str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&')
   }
-
-
 })()
