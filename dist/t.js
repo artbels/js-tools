@@ -164,6 +164,15 @@
     return T.rp(params)
   }
 
+  T.get = function (apiUrl) {
+    var params = {
+      url: apiUrl,
+      method: 'GET'
+    }
+
+    return T.rp(params)
+  }
+
   T.patch = function (apiUrl, body) {
     var params = {
       url: apiUrl,
