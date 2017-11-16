@@ -3,6 +3,9 @@
 
   T.iter = function (arr, func, params) {
     return new Promise(function (responce, err) {
+      if (typeof responce === 'undefined') responce = function () {}
+      if (typeof err === 'undefined') err = function () {}
+
       var startTime = new Date()
 
       params = params || {}
@@ -22,7 +25,7 @@
       if ((typeof params.verbose === 'undefined') && (arr.length > 1000)) params.verbose = true
 
       if (!arr || !arr.length) {
-        if (err) err('empty arr')
+        err('empty arr')
         if (params.cb) params.cb('empty arr')
         return
       }
@@ -56,7 +59,7 @@
 
         if (received == params.len) {
           if (params.cb) params.cb(finalArr)
-          if (responce) responce(finalArr)
+          responce(finalArr)
         } else if (params.index < params.len) {
           launchNextLine(params.index)
           params.index++
