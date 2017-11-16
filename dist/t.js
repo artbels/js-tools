@@ -25,7 +25,7 @@
       if ((typeof params.verbose === 'undefined') && (arr.length > 1000)) params.verbose = true
 
       if (!arr || !arr.length) {
-        err('empty arr')
+        responce('empty arr')
         if (params.cb) params.cb('empty arr')
         return
       }
