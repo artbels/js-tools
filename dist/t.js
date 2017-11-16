@@ -16,7 +16,7 @@
         }
       }
 
-      params.cb = params.cb || console.log
+      params.cb = params.cb || function () {}
       params.index = params.index || params.i || 0
       params.len = params.len || arr.length
       params.timeout = params.timeout || 0
@@ -24,13 +24,13 @@
       params.consoleRound = params.consoleRound || Math.floor(params.len / 20)
       if ((typeof params.verbose === 'undefined') && (arr.length > 1000)) params.verbose = true
 
+      var finalArr = []
+
       if (!arr || !arr.length) {
-        responce('empty arr')
-        if (params.cb) params.cb('empty arr')
+        responce(finalArr)
+        if (params.cb) params.cb(finalArr)
         return
       }
-
-      var finalArr = []
 
       var received = 0
 
