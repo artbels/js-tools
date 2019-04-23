@@ -227,10 +227,10 @@
       }, 50)
     }
 
-    function isMyScriptLoaded (url) {
+    function isMyScriptLoaded (src) {
       var loadedScripts = document.getElementsByTagName('script')
       for (var i = loadedScripts.length; i--;) {
-        if (loadedScripts[i].src == url) return true
+        if (loadedScripts[i].src == src) return true
       }
       return false
     }
@@ -259,6 +259,14 @@
           onload()
         }
       }, 50)
+    }
+
+    function isMyLinkLoaded (href) {
+      var loadedLinks = document.getElementsByTagName('link')
+      for (var i = loadedLinks.length; i--;) {
+        if (loadedLinks[i].href == href) return true
+      }
+      return false
     }
   }
 
