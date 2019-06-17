@@ -223,7 +223,7 @@
         if ((typeof lookFor !== 'undefined') || (lookFor)) {
           clearInterval(interv)
           onload()
-        }
+        } else waitForScriptLoad (lookFor, onload)
       }, 50)
     }
 
@@ -254,10 +254,10 @@
 
     function waitForScriptLoad (lookFor, onload) {
       var interv = setInterval(function () {
-        if ((typeof lookFor !== 'undefined') || (lookFor)) {
+        if ((typeof lookFor !== 'undefined') || lookFor) {
           clearInterval(interv)
           onload()
-        }
+        } else waitForScriptLoad (lookFor, onload)
       }, 50)
     }
 
