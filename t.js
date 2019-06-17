@@ -220,7 +220,7 @@
 
     function waitForScriptLoad (lookFor, onload) {
       var interv = setInterval(function () {
-        if ((typeof lookFor !== 'undefined') || (lookFor)) {
+        if ((typeof window[lookFor] !== 'undefined') || window[lookFor]) {
           clearInterval(interv)
           onload()
         } else waitForScriptLoad (lookFor, onload)
@@ -236,30 +236,18 @@
     }
   }
 
-  T.importCss = function (href, lookFor, onload) {
+  T.importCss = function (href) {
     if (!isMyLinkLoaded(href)) {
       var s = document.createElement('link')
       s.setAttribute('rel', 'stylesheet')
       s.setAttribute('href', href)
-      if (onload) waitForScriptLoad(lookFor, onload)
       var head = document.getElementsByTagName('head')[0]
       if (head) {
         head.appendChild(s)
       } else {
         document.body.appendChild(s)
       }
-    } else {
-      if (onload) onload()
-    }
-
-    function waitForScriptLoad (lookFor, onload) {
-      var interv = setInterval(function () {
-        if ((typeof lookFor !== 'undefined') || lookFor) {
-          clearInterval(interv)
-          onload()
-        } else waitForScriptLoad (lookFor, onload)
-      }, 50)
-    }
+    } 
 
     function isMyLinkLoaded (href) {
       var loadedLinks = document.getElementsByTagName('link')
