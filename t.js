@@ -218,8 +218,10 @@
       if (onload) onload()
     }
 
+    var interv
+
     function waitForScriptLoad (lookFor, onload) {
-      var interv = setInterval(function () {
+       interv = setInterval(function () {
         if ((typeof window[lookFor] !== 'undefined') || window[lookFor]) {
           clearInterval(interv)
           onload()
