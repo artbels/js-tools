@@ -1,6 +1,94 @@
 ;(function () {
   var T = this.T = {}
 
+  T.rp = function (params) {
+    if (typeof params === 'string') {
+      params = {
+        url: params
+      }
+    }
+
+    if (!params.url && !params.uri) throw Error('no url')
+
+    params.url = params.url || params.uri
+    params.method = params.method || 'GET'
+    params.timeout = params.timeout || 0
+    params.json = params.json !== undefined ? params.json : true
+
+    return new Promise(function (resolve, reject) {
+      var req = new XMLHttpRequest()
+      req.open(params.method, params.url)
+
+      if (params.body) req.setRequestHeader('Content-Type', 'application/json')
+
+      if (params.headers) {
+        for (var key in params.headers) {
+          req.setRequestHeader(key, params.headers[key])
+        }
+      }
+
+      req.onload = function () {
+        if (params.json) {
+          try {
+            resolve(JSON.parse(req.response))
+          } catch (e) {
+            resolve(req.response)
+          }
+        } else {
+          resolve(req.response)
+        }
+      }
+
+      req.timeout = params.timeout
+      req.ontimeout = function () {
+        console.log('getRequest timed out: ' + req.timeout)
+        reject(req.statusText)
+      }
+      req.onerror = function () {
+        reject('Network Error')
+      }
+      req.send(params.body && JSON.stringify(params.body))
+    })
+  }  
+
+  T.post = function (apiUrl, body) {
+    var params = {
+      url: apiUrl,
+      body: body,
+      method: 'POST'
+    }
+
+    return T.rp(params)
+  }
+
+  T.get = function (apiUrl) {
+    var params = {
+      url: apiUrl,
+      method: 'GET'
+    }
+
+    return T.rp(params)
+  }
+
+  T.patch = function (apiUrl, body) {
+    var params = {
+      url: apiUrl,
+      body: body,
+      method: 'PATCH'
+    }
+
+    return T.rp(params)
+  }
+
+  T.delete = function (apiUrl) {
+    var params = {
+      url: apiUrl,
+      method: 'DELETE'
+    }
+
+    return T.rp(params)
+  }
+
   T.iter = function (arr, func, params) {
     return new Promise(function (responce, err) {
       if (typeof responce === 'undefined') responce = function () {}
