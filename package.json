@@ -1,7 +1,7 @@
 {
   "name": "artbels-js-tools",
   "version": "1.0.54",
-  "description": "Small tools like browser request-promise or iterate recursion controller",
+  "description": "Small tools like iterate recursion controller",
   "main": "t.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,9 +16,6 @@
     "url": "https://github.com/artbels/js-tools/issues"
   },
   "homepage": "https://github.com/artbels/js-tools#readme",
-  "dependencies": {
-    "request-promise": "^3.0.0"
-  },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
