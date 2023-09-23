@@ -1,6 +1,14 @@
 ;(function () {
   var T = this.T = {}
 
+  T.runPromiseAll = async function(o) {
+    const promRes = await Promise.all(Object.values(o))
+
+    Object.keys(o).forEach((key, i) =>
+      o[key] = promRes[i]
+    )
+  }
+
   T.rp = function (params) {
     if (typeof params === 'string') {
       params = {
