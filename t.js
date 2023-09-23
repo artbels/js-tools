@@ -1,6 +1,161 @@
 ;(function () {
   var T = this.T = {}
 
+  T.cyrrilize = function(input) {
+    if (!input) return
+
+    if (typeof input === 'number') input = input.toString()
+
+    if (typeof input !== 'string') return
+
+    var letterMap = {
+      '/': ' ',
+      '\\': ' ',
+      "'": '',
+      a: 'а',
+      b: 'б',
+      c: 'с',
+      d: 'д',
+      e: 'е',
+      f: 'ф',
+      g: 'г',
+      h: 'х',
+      i: 'и',
+      j: 'ж',
+      k: 'к',
+      l: 'л',
+      m: 'ь',
+      n: 'н',
+      o: 'о',
+      p: 'п',
+      q: 'к',
+      r: 'р',
+      s: 'с',
+      t: 'т',
+      u: 'у',
+      v: 'в',
+      w: 'в',
+      x: 'кс',
+      y: 'й',
+      z: 'з'
+    }
+
+    var finStr = ''
+
+    for (var i = 0; i < input.length; i++) {
+      if (letterMap[input[i].toLowerCase()]) {
+        finStr += letterMap[input[i].toLowerCase()]
+      } else {
+        finStr += input[i]
+      }
+    }
+    return finStr
+  }
+
+  Blocks.wrongKeybCyr = function(str) {
+    if (!str) return
+
+    if (typeof str !== 'string') return
+
+    var conv = {
+      'й': 'q',
+      'ф': 'a',
+      'я': 'z',
+      'ц': 'w',
+      'ы': 's',
+      'ч': 'x',
+      'у': 'e',
+      'в': 'd',
+      'с': 'c',
+      'к': 'r',
+      'а': 'f',
+      'м': 'v',
+      'е': 't',
+      'п': 'g',
+      'и': 'b',
+      'н': 'y',
+      'р': 'h',
+      'т': 'n',
+      'г': 'u',
+      'о': 'j',
+      'ь': 'm',
+      'ш': 'i',
+      'л': 'k',
+      'б': ',',
+      'щ': 'o',
+      'д': 'l',
+      'ю': '.',
+      'з': 'p',
+      'х': '[',
+      'ъ': ']',
+      'э': "'",
+      'ж': ';'
+    }
+
+    var finStr = ''
+
+    for (var i = 0; i < str.length; i++) {
+      if (conv[str[i].toLowerCase()]) {
+        finStr += conv[str[i].toLowerCase()]
+      } else {
+        finStr += str[i]
+      }
+    }
+    return finStr
+  }
+
+  Blocks.wrongKeybLat = function(str) {
+    if (!str) return
+
+    if (typeof str !== 'string') return
+
+    var conv = {
+      'q': 'й',
+      'a': 'ф',
+      'z': 'я',
+      'w': 'ц',
+      's': 'ы',
+      'x': 'ч',
+      'e': 'у',
+      'd': 'в',
+      'c': 'с',
+      'r': 'к',
+      'f': 'а',
+      'v': 'м',
+      't': 'е',
+      'g': 'п',
+      'b': 'и',
+      'y': 'н',
+      'h': 'р',
+      'n': 'т',
+      'u': 'г',
+      'j': 'о',
+      'm': 'ь',
+      'i': 'ш',
+      'k': 'л',
+      ',': 'б',
+      'o': 'щ',
+      'l': 'д',
+      '.': 'ю',
+      'p': 'з',
+      '[': 'х',
+      ']': 'ъ',
+      "'": 'э',
+      ';': 'ж'
+    }
+
+    var finStr = ''
+
+    for (var i = 0; i < str.length; i++) {
+      if (conv[str[i].toLowerCase()]) {
+        finStr += conv[str[i].toLowerCase()]
+      } else {
+        finStr += str[i]
+      }
+    }
+    return finStr
+  }
+
   T.runPromiseAll = async function(o) {
     const promRes = await Promise.all(Object.values(o))
 
