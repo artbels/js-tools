@@ -52,7 +52,7 @@
     return finStr
   }
 
-  Blocks.wrongKeybCyr = function(str) {
+  T.wrongKeybCyr = function(str) {
     if (!str) return
 
     if (typeof str !== 'string') return
@@ -104,7 +104,7 @@
     return finStr
   }
 
-  Blocks.wrongKeybLat = function(str) {
+  T.wrongKeybLat = function(str) {
     if (!str) return
 
     if (typeof str !== 'string') return
